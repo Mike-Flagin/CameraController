@@ -1,11 +1,11 @@
 package com.toolsapps.cameracontroller.view;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.toolsapps.cameracontroller.AppSettings;
 import com.toolsapps.cameracontroller.ptp.Camera;
 
-public abstract class SessionActivity extends Activity {
+public abstract class SessionActivity extends AppCompatActivity {
 
     public abstract Camera getCamera();
 

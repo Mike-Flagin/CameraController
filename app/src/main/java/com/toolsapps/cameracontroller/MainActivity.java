@@ -1,11 +1,6 @@
 package com.toolsapps.cameracontroller;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -16,6 +11,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +35,6 @@ import com.toolsapps.cameracontroller.view.GalleryFragment;
 import com.toolsapps.cameracontroller.view.SessionActivity;
 import com.toolsapps.cameracontroller.view.SessionView;
 import com.toolsapps.cameracontroller.view.TabletSessionFragment;
-import com.toolsapps.cameracontroller.view.WebViewDialogFragment;
 
 import java.io.File;
 
@@ -117,7 +116,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
 
         settings = new AppSettings(this);
 
-        ActionBar bar = getActionBar();
+        ActionBar bar = getSupportActionBar();
 
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setDisplayHomeAsUpEnabled(false);
@@ -131,19 +130,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
             // nop
         }
 
-        if (settings.showChangelog(appVersionCode)) {
-            showChangelog();
-        }
-
         ptp = PtpService.Singleton.getInstance(this);
-    }
-
-    private void showChangelog() {
-        FragmentTransaction changelogTx = getFragmentManager().beginTransaction();
-        WebViewDialogFragment changelogFragment = WebViewDialogFragment.newInstance(R.string.whats_new,
-                "file:///android_asset/changelog/changelog.html");
-        changelogTx.add(changelogFragment, "changelog");
-        changelogTx.commit();
     }
 
     @Override
@@ -283,10 +270,6 @@ public class MainActivity extends SessionActivity implements CameraListener {
         th.start();
     }
 
-    public void onMenuChangelogClicked(MenuItem item) {
-        showChangelog();
-    }
-
     public void onMenuSettingsClicked(MenuItem item) {
         startActivity(new Intent(this, AppSettingsActivity.class));
     }
@@ -315,7 +298,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
             dismissDialog(DIALOG_NO_CAMERA);
         } catch (IllegalArgumentException e) {
         }
-        getActionBar().setTitle(camera.getDeviceName());
+        getSupportActionBar().setTitle(camera.getDeviceName());
         camera.setCapturedPictureSampleSize(settings.getCapturedPictureSampleSize());
         sessionFrag.cameraStarted(camera);
     }

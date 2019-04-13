@@ -17,8 +17,8 @@
 <resources>
 
   <!-- App specific, need to be overridden -->
-  <string name="app_name">Remote Your Cam USB</string>
-  <string name="launcher_label">RYC USB</string>
+  <string name="app_name">CameraController</string>
+  <string name="launcher_label">CameraController</string>
   <string name="ok">Ok</string>
   <string name="cancel">Cancel</string>
 
