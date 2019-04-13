@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -35,8 +34,6 @@ import com.toolsapps.cameracontroller.view.GalleryFragment;
 import com.toolsapps.cameracontroller.view.SessionActivity;
 import com.toolsapps.cameracontroller.view.SessionView;
 import com.toolsapps.cameracontroller.view.TabletSessionFragment;
-
-import java.io.File;
 
 public class MainActivity extends SessionActivity implements CameraListener {
 
@@ -213,61 +210,6 @@ public class MainActivity extends SessionActivity implements CameraListener {
             return b.create();
         }
         return super.onCreateDialog(id);
-    }
-
-    public void onMenuFeedbackClicked(MenuItem item) {
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setPositiveButton(R.string.ok, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                sendDeviceInformation();
-            }
-        });
-        b.setNegativeButton(R.string.cancel, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        b.setTitle(R.string.feedback_dialog_title);
-        b.setMessage(R.string.feedback_dialog_message);
-        b.show();
-    }
-
-    private void sendDeviceInformation() {
-        showDialog(DIALOG_PROGRESS);
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                File dir = getExternalCacheDir();
-                final File out = dir != null ? new File(dir, "deviceinfo.txt") : null;
-
-                if (camera != null) {
-                    camera.writeDebugInfo(out);
-                }
-
-                final String shortDeviceInfo = out == null && camera != null ? camera.getDeviceInfo() : "unknown";
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MainActivity.this.dismissDialog(DIALOG_PROGRESS);
-                        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                        sendIntent.setType("text/plain");
-                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "RYC USB Feedback");
-                        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "PUT_EMAIL_HERE" });
-                        if (out != null && camera != null) {
-                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + out.toString()));
-                            sendIntent.putExtra(Intent.EXTRA_TEXT, "Any problems or feature whishes? Let us know: ");
-                        } else {
-                            sendIntent.putExtra(Intent.EXTRA_TEXT,
-                                    "Any problems or feature whishes? Let us know: \n\n\n" + shortDeviceInfo);
-                        }
-                        startActivity(Intent.createChooser(sendIntent, "Email:"));
-                    }
-                });
-            }
-        });
-        th.start();
     }
 
     public void onMenuSettingsClicked(MenuItem item) {

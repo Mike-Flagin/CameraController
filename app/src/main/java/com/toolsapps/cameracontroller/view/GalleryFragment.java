@@ -54,14 +54,14 @@ public class GalleryFragment extends SessionFragment implements Camera.StorageIn
 
         View view = inflater.inflate(R.layout.gallery_frag, container, false);
 
-        storageSpinner = (Spinner) view.findViewById(R.id.storage_spinner);
+        storageSpinner = view.findViewById(R.id.storage_spinner);
         storageAdapter = new StorageAdapter(getActivity());
         storageSpinner.setAdapter(storageAdapter);
 
-        emptyView = (TextView) view.findViewById(android.R.id.empty);
+        emptyView = view.findViewById(android.R.id.empty);
         emptyView.setText(getString(R.string.gallery_loading));
 
-        galleryView = (GridView) view.findViewById(android.R.id.list);
+        galleryView = view.findViewById(android.R.id.list);
         galleryAdapter = new GalleryAdapter(getActivity(), this);
         galleryAdapter.setReverseOrder(getSettings().isGalleryOrderReversed());
         galleryView.setAdapter(galleryAdapter);
@@ -69,7 +69,7 @@ public class GalleryFragment extends SessionFragment implements Camera.StorageIn
         galleryView.setEmptyView(emptyView);
         galleryView.setOnItemClickListener(this);
 
-        orderCheckbox = (CheckBox) view.findViewById(R.id.reverve_order_checkbox);
+        orderCheckbox = view.findViewById(R.id.reverve_order_checkbox);
         orderCheckbox.setChecked(getSettings().isGalleryOrderReversed());
         orderCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
