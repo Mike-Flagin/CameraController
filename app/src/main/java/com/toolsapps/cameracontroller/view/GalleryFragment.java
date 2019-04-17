@@ -78,7 +78,7 @@ public class GalleryFragment extends SessionFragment implements Camera.StorageIn
             }
         });
 
-        enableUi(false);
+        enableUi(true);
 
         ((SessionActivity) getActivity()).setSessionView(this);
 

@@ -5,15 +5,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
@@ -39,8 +35,9 @@ public class MainActivity extends SessionActivity implements CameraListener {
 
     private static final int DIALOG_PROGRESS = 1;
     private static final int DIALOG_NO_CAMERA = 2;
+    private static int GALLERY_SESS = 0; // 0 - sess, 1 - gallery
 
-    private static class MyTabListener implements ActionBar.TabListener {
+    private static class MyTabListener {
 
         private final Fragment fragment;
 
@@ -48,25 +45,13 @@ public class MainActivity extends SessionActivity implements CameraListener {
             this.fragment = fragment;
         }
 
-        @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            ft.add(R.id.fragment_container, fragment);
+        public void Select(FragmentTransaction ft) {
+            ft.replace(R.id.fragment_container, fragment);
+            ft.commit();//commit it now - ?
         }
-
-        @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-            ft.remove(fragment);
-        }
-
-        @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-        }
-
     }
 
     private final String TAG = MainActivity.class.getSimpleName();
-
-    private final Handler handler = new Handler();
 
     private PtpService ptp;
     private Camera camera;
@@ -99,6 +84,10 @@ public class MainActivity extends SessionActivity implements CameraListener {
             Log.i(TAG, "onCreate");
         }
 
+        MyTabListener tab = new MyTabListener(new TabletSessionFragment());
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        tab.Select(ft);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -112,20 +101,6 @@ public class MainActivity extends SessionActivity implements CameraListener {
         setContentView(R.layout.session);
 
         settings = new AppSettings(this);
-
-        ActionBar bar = getSupportActionBar();
-
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        bar.setDisplayHomeAsUpEnabled(false);
-        bar.addTab(bar.newTab().setText("Session").setTabListener(new MyTabListener(new TabletSessionFragment())));
-        bar.addTab(bar.newTab().setText("Gallery").setTabListener(new MyTabListener(new GalleryFragment())));
-
-        int appVersionCode = -1;
-        try {
-            appVersionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-        } catch (NameNotFoundException e) {
-            // nop
-        }
 
         ptp = PtpService.Singleton.getInstance(this);
     }
@@ -228,6 +203,21 @@ public class MainActivity extends SessionActivity implements CameraListener {
                 PackageUtil.getVersionName(this)));
         b.setView(view);
         b.show();
+    }
+
+    public void onMenuGallserSessClicked(MenuItem item) {
+        MyTabListener tab;
+        if(GALLERY_SESS == 0) {
+            GALLERY_SESS = 1;
+            tab = new MyTabListener(new GalleryFragment());
+            item.setTitle(R.string.session);
+        } else {
+            GALLERY_SESS = 0;
+            item.setTitle(R.string.gallery);
+            tab = new MyTabListener(new TabletSessionFragment());
+        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        tab.Select(ft);
     }
 
     @Override
