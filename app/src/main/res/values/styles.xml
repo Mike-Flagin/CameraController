@@ -35,8 +35,8 @@
   </style>
 
   <style name="PropertyToggle">
-    <item name="android:textOn"></item>
-    <item name="android:textOff"></item>
+    <item name="android:textOn"> </item>
+    <item name="android:textOff"> </item>
     <item name="android:layout_width">@dimen/gridPropertyWidth</item>
     <item name="android:layout_height">@dimen/gridPropertyHeight</item>
     <item name="android:gravity">center</item>

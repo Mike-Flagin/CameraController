@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_galery_sess"
-        android:onClick="onMenuGallserSessClicked"
-        android:title="@string/session"/>
+        android:onClick="onMenuGallerySessClicked"
+        android:title="@string/gallery"/>
 
     <item
         android:id="@+id/menu_settings"

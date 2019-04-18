@@ -47,7 +47,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
 
         public void Select(FragmentTransaction ft) {
             ft.replace(R.id.fragment_container, fragment);
-            ft.commit();//commit it now - ?
+            ft.commit();
         }
     }
 
@@ -83,7 +83,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
         if (AppConfig.LOG) {
             Log.i(TAG, "onCreate");
         }
-
+//TODO:darkMode; interval footage
         MyTabListener tab = new MyTabListener(new TabletSessionFragment());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         tab.Select(ft);
@@ -205,7 +205,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
         b.show();
     }
 
-    public void onMenuGallserSessClicked(MenuItem item) {
+    public void onMenuGallerySessClicked(MenuItem item) {
         MyTabListener tab;
         if(GALLERY_SESS == 0) {
             GALLERY_SESS = 1;

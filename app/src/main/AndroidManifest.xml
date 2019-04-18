@@ -23,7 +23,8 @@
     android:icon="@drawable/icon"
     android:label="@string/app_name"
     android:largeHeap="true"
-    android:theme="@style/Theme.RYC">
+    android:theme="@style/Theme.RYC"
+      android:allowBackup="true">
     <activity
       android:name="com.toolsapps.cameracontroller.MainActivity"
       android:configChanges="orientation"

@@ -19,6 +19,10 @@ public class AppSettings {
         return last != -1 && nextNumber > last;
     }
 
+    public boolean isDarkMode() {
+        return prefs.getBoolean("dark_mode_switcher", false);
+    }
+
     public boolean isGalleryOrderReversed() {
         return prefs.getBoolean("internal.gallery.reverse_order", false);
     }
