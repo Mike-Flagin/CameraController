@@ -79,9 +79,12 @@
       android:id="@+id/exposureCompensationToggle"
       style="@style/GridPropertyToggle"/>
 
-    <View
-      android:layout_width="@dimen/gridPropertyWidth"
-      android:layout_height="@dimen/gridPropertyHeight"/>
+      <com.toolsapps.cameracontroller.PropertyToggle
+          android:id="@+id/setIntervals"
+          style="@style/GridPropertyToggle"
+          android:textOff="@string/intervals"
+          android:textOn="@string/intervals"
+          android:onClick="onSetIntervalsClicked"/>
 
     <ImageView
       android:id="@+id/shootingModeView"

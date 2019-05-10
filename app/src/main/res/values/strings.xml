@@ -76,5 +76,8 @@
   <string name="crash_dialog_text">An unexpected error occurred forcing the application to stop. Please help us fix this by sending us error data, all you have to do is click \'OK\'.</string>
   <string name="crash_dialog_comment_prompt">You might add your comments about the problem below or add your email address so we can contact:</string>
   <string name="crash_dialog_ok_toast">Thank you!</string>
+    <string name="intervals">Int</string>
+    <string name="amount_of_shots">Amount of Shots</string>
+  <string name="period_between_shots">Period Between Shots</string>
 
 </resources>

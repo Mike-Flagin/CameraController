@@ -57,6 +57,7 @@
     <include
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+        style="GridPropertyToggle"
       layout="@layout/properties_grid"/>
 
     <LinearLayout

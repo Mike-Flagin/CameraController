@@ -2,9 +2,16 @@
 
 <resources>
 
-  <color name="windowBackground">#ffdddddd</color>
-  <color name="propertyListBackground">#aadddddd</color>
-  <color name="actionBarBackground">#ffbbbbbb</color>
-  <color name="selectedValueBackground">#ffffffff</color>
+    <color name="windowBackground">#ffdddddd</color>
+    <color name="propertyListBackground">#aadddddd</color>
+    <color name="actionBarBackground">#ffbbbbbb</color>
+    <color name="selectedValueBackground">#ffffffff</color>
+
+    <!-- DarkThemeColors -->
+    <color name="darkWindowBackground">#222222</color>
+    <color name="darkPropertyListBackground">#aa000000</color>
+    <color name="darkActionBarBackground">#ff444444</color>
+    <color name="darkSelectedValueBackground">#000000</color>
+
 
 </resources>

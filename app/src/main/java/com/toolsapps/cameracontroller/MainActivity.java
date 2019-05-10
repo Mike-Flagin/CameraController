@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toolsapps.cameracontroller.activities.AppSettingsActivity;
+import com.toolsapps.cameracontroller.activities.IntervalsActivity;
 import com.toolsapps.cameracontroller.ptp.Camera;
 import com.toolsapps.cameracontroller.ptp.Camera.CameraListener;
 import com.toolsapps.cameracontroller.ptp.PtpService;
@@ -62,6 +63,9 @@ public class MainActivity extends SessionActivity implements CameraListener {
     private boolean isLarge;
     private AppSettings settings;
 
+    public static int shotsAmount = 1;
+    public static int shotsPeriod = 0;
+
     @Override
     public Camera getCamera() {
         return camera;
@@ -83,7 +87,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
         if (AppConfig.LOG) {
             Log.i(TAG, "onCreate");
         }
-//TODO:darkMode; interval footage
+//TODO:darkMode for buttons; interval footage
         MyTabListener tab = new MyTabListener(new TabletSessionFragment());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         tab.Select(ft);
@@ -98,11 +102,18 @@ public class MainActivity extends SessionActivity implements CameraListener {
             isLarge = true;
         }
 
-        setContentView(R.layout.session);
-
         settings = new AppSettings(this);
 
+        if(settings.isDarkMode()) {
+            setTheme(R.style.Theme_RYC_Dark);
+        } else {
+            setTheme(R.style.Theme_RYC);
+        }
+
+        setContentView(R.layout.session);
+
         ptp = PtpService.Singleton.getInstance(this);
+
     }
 
     @Override
@@ -203,6 +214,10 @@ public class MainActivity extends SessionActivity implements CameraListener {
                 PackageUtil.getVersionName(this)));
         b.setView(view);
         b.show();
+    }
+
+    public void onSetIntervalsClicked(View v) {
+        startActivity(new Intent(this, IntervalsActivity.class));
     }
 
     public void onMenuGallerySessClicked(MenuItem item) {

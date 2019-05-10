@@ -27,7 +27,17 @@ public class PropertyAdapter<T> extends BaseAdapter {
         this.items = images;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         currentPosition = -1;
-        selectedBackgroundColor = context.getResources().getColor(R.color.selectedValueBackground);
+        switch(context.getApplicationInfo().theme) {
+            case R.style.Theme_RYC:
+                selectedBackgroundColor = context.getResources().getColor(R.color.selectedValueBackground);
+                break;
+            case R.style.Theme_RYC_Dark:
+                selectedBackgroundColor = context.getResources().getColor(R.color.darkSelectedValueBackground);
+                break;
+            default:
+                selectedBackgroundColor = context.getResources().getColor(R.color.selectedValueBackground);
+                break;
+        }
     }
 
     @Override

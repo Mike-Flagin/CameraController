@@ -56,4 +56,13 @@
     <item name="background">@color/actionBarBackground</item>
   </style>
 
+    <style name="Theme.ActionBar.RYC.Dark" parent="android:style/Widget.Holo.Light.ActionBar">
+    <item name="background">@color/darkActionBarBackground</item>
+  </style>
+
+    <style name="Theme.RYC.Dark" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/Theme.ActionBar.RYC.Dark</item>
+        <item name="android:windowBackground">@drawable/window_backgrownd_dark</item>
+    </style>
+
 </resources>

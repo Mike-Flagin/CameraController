@@ -23,6 +23,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.toolsapps.cameracontroller.GestureDetector;
+import com.toolsapps.cameracontroller.MainActivity;
 import com.toolsapps.cameracontroller.PictureView;
 import com.toolsapps.cameracontroller.PropertyDisplayer;
 import com.toolsapps.cameracontroller.R;
@@ -121,6 +122,7 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
         histogramToggle = (ToggleButton) view.findViewById(R.id.histogramToggle);
         shootingModeView = (ImageView) view.findViewById(R.id.shootingModeView);
         btnLiveview = (Button) view.findViewById(R.id.btn_liveview);
+
 
         btnLiveview.setOnClickListener(new OnClickListener() {
             @Override
@@ -284,7 +286,7 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
                 text);
         properties.put(virtualProperty, displayer);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.FILL_PARENT);
+                LinearLayout.LayoutParams.MATCH_PARENT);
         params.rightMargin = (int) DimenUtil.dpToPx(getActivity(), 2);
         displayer.getList().setLayoutParams(params);
         leftPropertiesView.addView(displayer.getList());
@@ -670,7 +672,16 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
     public void onTakePictureClicked(View view) {
         // TODO necessary
         //liveView.setLiveViewData(null);
-        camera().capture();
+        for (int i = 0; i < MainActivity.shotsAmount; ++i) {
+            camera().capture();
+            try {
+                Thread.sleep(MainActivity.shotsPeriod * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        MainActivity.shotsAmount = 1;
+        MainActivity.shotsPeriod = 0;
         justCaptured = true;
         handler.postDelayed(justCapturedResetRunner, 500);
     }
