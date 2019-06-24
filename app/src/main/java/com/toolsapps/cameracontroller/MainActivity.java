@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,7 +114,6 @@ public class MainActivity extends SessionActivity implements CameraListener {
         setContentView(R.layout.session);
 
         ptp = PtpService.Singleton.getInstance(this);
-
     }
 
     @Override
@@ -137,6 +137,60 @@ public class MainActivity extends SessionActivity implements CameraListener {
         isInStart = true;
         ptp.setCameraListener(this);
         ptp.initialize(this, getIntent());
+
+        if(settings.isDarkMode()) {
+            ((PropertyToggle) findViewById(R.id.liveViewToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.liveViewToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.histogramToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.histogramToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.driveLensToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.driveLensToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.shutterSpeedToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.shutterSpeedToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.apertureValueToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.apertureValueToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.isoSpeedToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.isoSpeedToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            //Change color
+//            (findViewById(R.id.whitebalanceToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.colorTemperatureToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.colorTemperatureToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.pictureStyleToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.pictureStyleToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            //Change color
+//            (findViewById(R.id.meteringModeToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            //Change color
+//            (findViewById(R.id.focusMeteringModeToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.focusPointsToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.focusPointsToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.exposureCompensationToggle)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.exposureCompensationToggle)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((PropertyToggle) findViewById(R.id.setIntervals)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.setIntervals)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            ((Button) findViewById(R.id.takePictureBtn)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+            (findViewById(R.id.takePictureBtn)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+
+            try {
+                ((Button) findViewById(R.id.focusBtn)).setTextColor(getResources().getColor(R.color.selectedValueBackground));
+                (findViewById(R.id.focusBtn)).setBackgroundColor(getResources().getColor(R.color.darkPropertyListBackground));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -200,6 +254,7 @@ public class MainActivity extends SessionActivity implements CameraListener {
 
     public void onMenuSettingsClicked(MenuItem item) {
         startActivity(new Intent(this, AppSettingsActivity.class));
+        finish();
     }
 
     public void onMenuAboutClicked(MenuItem item) {

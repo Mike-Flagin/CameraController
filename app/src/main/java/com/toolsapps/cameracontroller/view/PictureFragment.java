@@ -60,7 +60,7 @@ public class PictureFragment extends SessionFragment implements Camera.RetrieveI
     @Override
     public void onStart() {
         super.onStart();
-        getActivity().getActionBar().hide();
+        //getActivity().getActionBar().hide();
         if (camera() == null) {
 
         } else if (picture == null) {
@@ -72,7 +72,7 @@ public class PictureFragment extends SessionFragment implements Camera.RetrieveI
     public void onStop() {
         super.onStop();
         if (isRemoving()) {
-            getActivity().getActionBar().show();
+            //getActivity().getActionBar().show();
         }
     }
 

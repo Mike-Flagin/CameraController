@@ -124,7 +124,7 @@ public class GestureDetector {
                     float dx = t1.currentX - t0.currentX;
                     float dy = t1.currentY - t0.currentY;
                     float d = (float) Math.sqrt(dx * dx + dy * dy);
-                    gestureHandler.onPinchZoom(t0.currentX + dx / 2, t0.currentY + dy / 2, d - oldD);
+                    gestureHandler.onPinchZoom(t0.currentX + dx / 2, t0.currentY + dy / 2, (d - oldD) / 2);
                     t0.moved();
                     t1.moved();
                 }

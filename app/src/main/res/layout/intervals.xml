@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="4dp"
@@ -14,6 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/shotsAmountView"
             android:layout_width="176dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -36,6 +36,7 @@
             android:text="1"/>
 
         <TextView
+            android:id="@+id/periodOfShotsView"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -57,6 +58,7 @@
             android:text="0"/>
 
         <Button
+            android:id="@+id/ButtonIntervals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
