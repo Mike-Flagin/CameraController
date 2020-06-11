@@ -66,4 +66,8 @@ public class AppSettings {
         }
         return defaultValue;
     }
+
+    public boolean isSaveImg() {
+        return prefs.getBoolean("save_img_switcher", false);
+    }
 }

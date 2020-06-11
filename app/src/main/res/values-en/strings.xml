@@ -71,5 +71,9 @@
     <string name="intervals">Int</string>
     <string name="amount_of_shots">Amount of Shots</string>
     <string name="period_between_shots">Period Between Shots</string>
+    <string name="save_image_setting">Save images</string>
+    <string name="save_img_sd">Save images on SD card</string>
+    <string name="save_img">Save images</string>
+    <string name="shot">Shot</string>
 
 </resources>

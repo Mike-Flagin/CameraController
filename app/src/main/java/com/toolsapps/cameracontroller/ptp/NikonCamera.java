@@ -356,4 +356,7 @@ public class NikonCamera extends PtpCamera {
             return points;
         }
     }
+
+    public void onEventCpatureCompleteRecInSdram() {
+    }
 }

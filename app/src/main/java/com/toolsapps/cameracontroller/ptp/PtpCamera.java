@@ -567,6 +567,8 @@ public abstract class PtpCamera implements Camera {
             if (AppConfig.LOG) {
                 Log.i(TAG, "handling command " + command.getClass().getSimpleName());
             }
+            //TODO:because not supported
+            if(command.getClass().getSimpleName().equals("NikonEventCheckCommand")) return;
 
             ByteBuffer b = smallIn;
             b.position(0);

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.toolsapps.cameracontroller.AppSettings;
 import com.toolsapps.cameracontroller.GestureDetector;
 import com.toolsapps.cameracontroller.MainActivity;
 import com.toolsapps.cameracontroller.PictureView;
@@ -36,23 +38,31 @@ import com.toolsapps.cameracontroller.ptp.model.LiveViewData;
 import com.toolsapps.cameracontroller.ptp.model.ObjectInfo;
 import com.toolsapps.cameracontroller.util.DimenUtil;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TabletSessionFragment extends SessionFragment implements GestureDetector.GestureHandler,
-        Camera.RetrieveImageInfoListener {
+        Camera.RetrieveImageInfoListener, Camera.StorageInfoListener, Camera.RetrieveImageListener {
+
+    private final Camera.StorageInfoListener storageInfoListener = this;
 
     private final Handler handler = new Handler();
 
     private LinearLayout leftPropertiesView;
 
     private LayoutInflater inflater;
-
+    private String currentFileName = "";
     private ToggleButton liveViewToggle;
     private ToggleButton histogramToggle;
     private ToggleButton driveLensToggle;
     private ImageView shootingModeView;
+
+    private AppSettings settings;
 
     private Button focusBtn;
     private Button takePictureBtn;
@@ -66,6 +76,8 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
     private final Map<Integer, PropertyDisplayer> properties = new HashMap<Integer, PropertyDisplayer>();
 
     private LinearLayout driveLensPane;
+
+    private StorageAdapter storageAdapter;
 
     private LiveViewData currentLiveViewData;
     private LiveViewData currentLiveViewData2;
@@ -123,6 +135,8 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
         shootingModeView = (ImageView) view.findViewById(R.id.shootingModeView);
         btnLiveview = (Button) view.findViewById(R.id.btn_liveview);
 
+        storageAdapter = new StorageAdapter(getActivity());
+        settings = new AppSettings(getContext());
 
         btnLiveview.setOnClickListener(new OnClickListener() {
             @Override
@@ -638,7 +652,7 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
         if (camera() == null) {
             return;
         }
-        if (format == PtpConstants.ObjectFormat.EXIF_JPEG) {
+        if (format == PtpConstants.ObjectFormat.EXIF_JPEG || format == PtpConstants.ObjectFormat.JFIF) {
             if (isPro && liveViewToggle.isChecked() && showCapturedPictureNever) {
                 camera().retrieveImageInfo(this, handle);
                 handler.post(liveViewRestarterRunner);
@@ -672,18 +686,31 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
     public void onTakePictureClicked(View view) {
         // TODO necessary
         //liveView.setLiveViewData(null);
-        for (int i = 0; i < MainActivity.shotsAmount; ++i) {
-            camera().capture();
-            try {
-                Thread.sleep(MainActivity.shotsPeriod * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        Thread thread = new Thread(new Runnable() {
+        public void run() {
+            for(int i = 0; i < MainActivity.shotsAmount; ++i) {
+                camera().capture();
+                if (MainActivity.shotsAmount > 1) {
+                    //Toast.makeText(getContext(), getText(R.string.shot) + " " + (i + 1) + "/" + MainActivity.shotsAmount, Toast.LENGTH_SHORT).show();
+                }
+                try {
+                    Thread.sleep(MainActivity.shotsPeriod * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (settings.isSaveImg()) {
+                    camera().retrieveStorages(storageInfoListener);
+                }
+
+                justCaptured = true;
+                handler.postDelayed(justCapturedResetRunner, 500);
             }
-        }
-        MainActivity.shotsAmount = 1;
-        MainActivity.shotsPeriod = 0;
-        justCaptured = true;
-        handler.postDelayed(justCapturedResetRunner, 500);
+
+            MainActivity.shotsAmount = 1;
+            MainActivity.shotsPeriod = 0;
+        }});
+        thread.start();
     }
 
     public void onDriveLensNear3(View v) {
@@ -728,5 +755,101 @@ public class TabletSessionFragment extends SessionFragment implements GestureDet
                 }
             }
         });
+        currentFileName = objectInfo.filename;
+    }
+
+    @Override
+    public void onStorageFound(final int handle, final String label) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!inStart) {
+                    return;
+                }
+                storageAdapter.add(handle, label);
+            }
+        });
+    }
+
+    @Override
+    public void onAllStoragesFound() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!inStart || camera() == null) {
+                    return;
+                }
+                if (storageAdapter.getCount() == 0) {
+                    return;
+                }
+                try {
+                    Thread.sleep(camera().getProperty(1) / 10); //Большой костыль - пофиксить
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                camera().retrieveImageHandles(TabletSessionFragment.this, storageAdapter.getItemHandle(0),
+                        PtpConstants.ObjectFormat.EXIF_JPEG);
+            }
+        });
+    }
+
+    @Override
+    public void onImageHandlesRetrieved(final int[] handles) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!inStart) {
+                    return;
+                }
+                if (handles.length == 0) {
+                    return;
+                }
+                saveImage(handles[handles.length - 1]);
+            }
+        });
+    }
+
+    private void saveImage(int handle) {
+        camera().retrieveImageInfo(this, handle);
+        camera().retrieveImage(this, handle);
+    }
+
+    @Override
+    public void onImageRetrieved(int objectHandle, final Bitmap image) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (image == null) {
+                    if (inStart) {
+                        Toast.makeText(getActivity(), getString(R.string.error_loading_image), Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    if (isAdded()) {
+                        getFragmentManager().popBackStack();
+                    }
+                } else {
+                    saveToSdCard(image, currentFileName);
+                }
+            }
+        });
+    }
+
+    private void saveToSdCard(Bitmap image, String currentFileName) {
+        File sdCardDirectory = Environment.getExternalStorageDirectory();
+        File img = new File(sdCardDirectory, "/CameraPhotos/" + currentFileName);
+        FileOutputStream outStream;
+        try {
+
+            outStream = new FileOutputStream(img);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+
+            outStream.flush();
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

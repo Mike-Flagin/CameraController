@@ -19,6 +19,14 @@
       android:summary="@string/pref_captured_picture_duration_summary"
       android:title="@string/pref_captured_picture_duration_label"/>
   </PreferenceCategory>
+  <PreferenceCategory android:title="@string/save_image_setting">
+    <SwitchPreference
+        android:defaultValue="false"
+        android:summary="@string/save_img"
+        android:title="@string/save_img_sd"
+        android:key="save_img_switcher"
+        />
+  </PreferenceCategory>
   <PreferenceCategory android:title="@string/pref_category_picturestream_title">
     <ListPreference
       android:defaultValue="6"

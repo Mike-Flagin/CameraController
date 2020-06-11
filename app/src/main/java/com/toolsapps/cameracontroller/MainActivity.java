@@ -88,7 +88,6 @@ public class MainActivity extends SessionActivity implements CameraListener {
         if (AppConfig.LOG) {
             Log.i(TAG, "onCreate");
         }
-//TODO:darkMode for buttons; interval footage
         MyTabListener tab = new MyTabListener(new TabletSessionFragment());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         tab.Select(ft);
@@ -405,3 +404,5 @@ public class MainActivity extends SessionActivity implements CameraListener {
         sessionFrag.objectAdded(handle, format);
     }
 }
+
+//TODO save images to SDCARD

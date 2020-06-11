@@ -202,18 +202,18 @@ public class GalleryFragment extends SessionFragment implements Camera.StorageIn
 
     @Override
     public void onImageHandlesRetrieved(final int[] handles) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (!inStart) {
-                    return;
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!inStart) {
+                        return;
+                    }
+                    if (handles.length == 0) {
+                        emptyView.setText(getString(R.string.gallery_empty));
+                    }
+                    galleryAdapter.setHandles(handles);
                 }
-                if (handles.length == 0) {
-                    emptyView.setText(getString(R.string.gallery_empty));
-                }
-                galleryAdapter.setHandles(handles);
-            }
-        });
+            });
     }
 
     @Override

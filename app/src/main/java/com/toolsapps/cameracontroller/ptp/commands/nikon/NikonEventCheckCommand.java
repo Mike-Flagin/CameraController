@@ -1,7 +1,5 @@
 package com.toolsapps.cameracontroller.ptp.commands.nikon;
 
-import java.nio.ByteBuffer;
-
 import android.util.Log;
 
 import com.toolsapps.cameracontroller.AppConfig;
@@ -10,6 +8,8 @@ import com.toolsapps.cameracontroller.ptp.PtpCamera.IO;
 import com.toolsapps.cameracontroller.ptp.PtpConstants;
 import com.toolsapps.cameracontroller.ptp.PtpConstants.Event;
 import com.toolsapps.cameracontroller.ptp.PtpConstants.Operation;
+
+import java.nio.ByteBuffer;
 
 public class NikonEventCheckCommand extends NikonCommand {
 
@@ -54,6 +54,9 @@ public class NikonEventCheckCommand extends NikonCommand {
                 break;
             case Event.CaptureComplete:
                 camera.onEventCaptureComplete();
+                break;
+            case Event.NikonCaptureCompleteRecInSdram:
+                camera.onEventCpatureCompleteRecInSdram();
                 break;
             }
         }

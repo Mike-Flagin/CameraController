@@ -15,6 +15,7 @@
 
   <!-- For Feedback -->
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <!-- For Acra -->
   <uses-permission android:name="android.permission.INTERNET"/>
 
